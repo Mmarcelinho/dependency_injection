@@ -4,12 +4,15 @@ namespace Demo01.Controllers;
     [Route("api/")]
     public class HomeController : ControllerBase
     {
+        // Injeção de dependência das diferentes operações com escopos diferentes
         private readonly IOperationTransient _transientOperation1;
         private readonly IOperationTransient _transientOperation2;
         private readonly IOperationScoped _scopedOperation1;
         private readonly IOperationScoped _scopedOperation2;
         private readonly IOperationSingleton _singletonOperation1;
         private readonly IOperationSingleton _singletonOperation2;
+
+        // Construtor que recebe as instâncias das operações por injeção de dependência
         public HomeController(
         IOperationTransient transientOperation1,
         IOperationTransient transientOperation2,
@@ -26,6 +29,8 @@ namespace Demo01.Controllers;
             _singletonOperation2 = singletonOperation2;
         }
 
+        
+        // Rota GET para retornar informações sobre as operações
         [HttpGet]
         public String Get()
         {

@@ -1,5 +1,6 @@
 namespace Demo02.Repositories;
 
+  // Implementação do repositório de tarefas que herda da classe BaseRepository passando o T(type) da classe e implementa a interface ITarefaRepository
 public class TarefaRepository : BaseRepository<Tarefa>, ITarefaRepository
 {
     private readonly DataContext _context;

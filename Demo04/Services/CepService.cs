@@ -1,18 +1,24 @@
 namespace Demo04.Services;
 
-public class CepService : ICepService
-{
-    public async Task<CepModel> GetCep(string cep)
+    // Implementação do serviço ICepService que obtém informações de CEP usando uma API externa
+    public class CepService : ICepService
     {
-        var client = new HttpClient();
+        // Método para obter informações de CEP assincronamente
+        public async Task<CepModel> GetCep(string cep)
+        {
+            // Criação de uma instância do cliente HTTP
+            var client = new HttpClient();
 
-        var response = await client.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
+            // Realiza uma solicitação GET à API externa de CEP
+            var response = await client.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
 
-        var content = await response.Content.ReadAsStringAsync();
+            // Lê o conteúdo da resposta
+            var content = await response.Content.ReadAsStringAsync();
 
-        var cepResult = JsonSerializer.Deserialize<CepModel>(content);
+            // Desserializa o conteúdo JSON em um objeto CepModel
+            var cepResult = JsonSerializer.Deserialize<CepModel>(content);
 
-        return cepResult;
+            return cepResult;
+        }
     }
-}
 

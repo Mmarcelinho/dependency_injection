@@ -1,16 +1,19 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Registro das implementações concretas de IPagamento no contêiner
 builder.Services.AddScoped<PagamentoBoleto>();
 builder.Services.AddScoped<PagamentoCartao>();
 builder.Services.AddScoped<PagamentoPix>();
+
+// Registro da fábrica funcional para resolução dinâmica de IPagamento
 builder.Services.AddTransient<Func<ServiceEnum, IPagamento>>(serviceProvider => key =>
 {
+    // Switch case para mapear ServiceEnum para a implementação correta de IPagamento
     switch (key)
     {
         case ServiceEnum.Boleto: return serviceProvider.GetRequiredService<PagamentoBoleto>();
@@ -18,12 +21,10 @@ builder.Services.AddTransient<Func<ServiceEnum, IPagamento>>(serviceProvider => 
         case ServiceEnum.Pix: return serviceProvider.GetRequiredService<PagamentoPix>();
         default: return serviceProvider.GetRequiredService<PagamentoBoleto>();
     }
-
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,7 +32,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

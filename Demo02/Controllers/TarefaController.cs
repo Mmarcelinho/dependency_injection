@@ -4,6 +4,7 @@ namespace Demo02.Controllers;
 [Route("v1")]
 public class TarefaController : ControllerBase
 {
+      // Injeção de dependência dos repositórios passando o T(type) da classe
     private readonly IBaseRepository<Tarefa> _repository;
     private readonly ITarefaRepository _tarefaRepository;
 
